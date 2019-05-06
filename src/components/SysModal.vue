@@ -32,7 +32,7 @@
                     v-for="tag in system.tags"
                     :key="tag.id"
                     class="mr-1 py-1 text-align-center"
-                    >{{ renderTag(tag, npc.tier) }}</b-badge
+                    >{{ renderTag(tag, npc && npc.tier) }}</b-badge
                 >
             </div>
             <div>

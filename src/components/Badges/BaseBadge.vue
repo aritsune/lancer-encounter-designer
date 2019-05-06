@@ -1,54 +1,54 @@
 <template>
-  <div>
-    <b-button
-      size="small"
-      :variant="`outline-${variant}`"
-      :id="id"
-      class="sysbadge d-flex"
-      @click="showModal"
-      style="padding-top: 0; padding-bottom: 0"
-      :style="{
-        paddingRight: closable || addable ? 0 : null,
-        opacity: incompatible ? 0.7 : 1,
-        'pointer-events': incompatible ? 'none' : null,
-      }"
-      :class="{ incompatible }"
-    >
-      <div style="height: 30px; line-height: 30px">
-        <slot name="button" />
-      </div>
-      <div
-        style="height: 30px; line-height: 30px; padding-left: 7px; padding-right: 7px; margin-left: 7px;"
-        @click.stop="emitEvent"
-        class="buttonwrapper"
-        v-if="closable || addable"
-        :class="`border-${variant}`"
-      >
-        <span v-if="incompatible">
-          <plus-circle-outline-icon class="badgebutton" />
-        </span>
-        <template v-else>
-          <span v-if="closable">
-            <minus-circle-icon class="badgebutton" />
-          </span>
-          <span v-else-if="addable">
-            <plus-circle-icon class="badgebutton" />
-          </span>
-        </template>
-      </div>
-    </b-button>
+    <div>
+        <b-button
+            size="small"
+            :variant="`outline-${variant}`"
+            :id="id"
+            class="sysbadge d-flex"
+            @click="showModal"
+            style="padding-top: 0; padding-bottom: 0"
+            :style="{
+                paddingRight: closable || addable ? 0 : null,
+                opacity: incompatible ? 0.7 : 1,
+                'pointer-events': incompatible ? 'none' : null,
+            }"
+            :class="{ incompatible }"
+        >
+            <div style="height: 30px; line-height: 30px">
+                <slot name="button" />
+            </div>
+            <div
+                style="height: 30px; line-height: 30px; padding-left: 7px; padding-right: 7px; margin-left: 7px;"
+                @click.stop="emitEvent"
+                class="buttonwrapper"
+                v-if="closable || addable"
+                :class="`border-${variant}`"
+            >
+                <span v-if="incompatible">
+                    <plus-circle-outline-icon class="badgebutton" />
+                </span>
+                <template v-else>
+                    <span v-if="closable">
+                        <minus-circle-icon class="badgebutton" />
+                    </span>
+                    <span v-else-if="addable">
+                        <plus-circle-icon class="badgebutton" />
+                    </span>
+                </template>
+            </div>
+        </b-button>
 
-    <b-modal
-      centered
-      ref="sysmodal"
-      class="system-modal"
-      hide-header-close
-      hide-header
-      hide-footer
-    >
-      <slot name="modal" />
-    </b-modal>
-  </div>
+        <b-modal
+            centered
+            ref="sysmodal"
+            class="system-modal"
+            hide-header-close
+            hide-header
+            hide-footer
+        >
+            <slot name="modal" />
+        </b-modal>
+    </div>
 </template>
 
 <script lang="ts">
