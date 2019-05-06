@@ -1,99 +1,69 @@
 <template>
-  <div class="syswrap">
-    <div @click="showModal" class="sys d-flex flex-column justify-content-center">
-      <div class="d-flex align-items-center justify-content-between" style="height: 24px;">
-        <h6 :class="`text-system--${system.type}`">
-          {{ systemIsShort || system.type === 'weapon' ? shorten(system.name) : system.name }}
-        </h6>
-        <div v-if="system.action">
-          {{ actionName(system.action) }}
-        </div>
-          <recharge v-if="system.recharge" :value="system.recharge" />
+    <div class="syswrap">
         <div
-          class="d-flex align-items-center"
-          v-if="system.type === 'weapon'"
+            @click="showModal"
+            class="sys d-flex flex-column justify-content-center"
         >
-          <dice-d20 class="d20 mr-1" />
-          <div class="font-weight-bold">
-            {{ rollString }}
-          </div>
-          <ArrowExpandHorizontal class="d20 ml-3 mr-1" />
-          <div class="font-weight-bold">{{ rangeString }}</div>
-          <Flare class="d20 ml-3 mr-1" />
-          <div class="font-weight-bold">{{ damageString }}</div>
+            <div
+                class="d-flex align-items-center justify-content-between"
+                style="height: 24px;"
+            >
+                <h6 :class="`text-system--${system.type}`">
+                    {{
+                        systemIsShort || system.type === 'weapon'
+                            ? shorten(system.name)
+                            : system.name
+                    }}
+                </h6>
+                <div v-if="system.action">
+                    {{ actionName(system.action) }}
+                </div>
+                <recharge v-if="system.recharge" :value="system.recharge" />
+                <div
+                    class="d-flex align-items-center"
+                    v-if="system.type === 'weapon'"
+                >
+                    <dice-d20 class="d20 mr-1" />
+                    <div class="font-weight-bold">
+                        {{ rollString }}
+                    </div>
+                    <ArrowExpandHorizontal class="d20 ml-3 mr-1" />
+                    <div class="font-weight-bold">{{ rangeString }}</div>
+                    <Flare class="d20 ml-3 mr-1" />
+                    <div class="font-weight-bold">{{ damageString }}</div>
+                </div>
+                <div
+                    class="d-flex d-row align-items-center"
+                    style="max-width: 60%; white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis;"
+                    v-else-if="systemIsShort"
+                >
+                    {{ system.effect_short || system.effect }}
+                </div>
+            </div>
+            <div
+                class="d-flex d-row align-items-center mt-1"
+                style="white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis;"
+                v-if="
+                    (!systemIsShort || system.type === 'weapon') &&
+                        system.effect
+                "
+            >
+                {{ system.effect_short || system.effect }}
+            </div>
+            <div
+                v-if="system.tags && system.tags.length"
+                style="font-size: 1.2em;"
+            >
+                <b-badge
+                    v-for="tag in system.tags"
+                    :key="tag.id"
+                    class="mr-1 py-1 text-align-center"
+                    >{{ renderTag(tag, npc.tier) }}</b-badge
+                >
+            </div>
         </div>
-        <div
-          class="d-flex d-row align-items-center"
-          style="max-width: 60%; white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis;"
-          v-else-if="systemIsShort"
-        >
-          {{ system.effect_short || system.effect }}
-        </div>
-      </div>
-      <div
-        class="d-flex d-row align-items-center mt-1"
-        style="white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis;"
-        v-if="(!systemIsShort || system.type === 'weapon') && system.effect"
-      >
-        {{ system.effect_short || system.effect }}
-      </div>
-      <div v-if="system.tags && system.tags.length" style="font-size: 1.2em;">
-        <b-badge v-for="tag in system.tags" :key="tag.id" class="mr-1 py-1 text-align-center">{{ renderTag(tag, npc.tier) }}</b-badge>
-      </div>
+        <SysModal :system="system" :npc="npc" ref="sysmodal" />
     </div>
-    <b-modal
-      centered
-      class="system-modal"
-      hide-header-close
-      hide-header
-      hide-footer
-      ref="sysmodal"
-    >
-      <h5
-        class="system-modal-title mb-0"
-        :class="`text-system--${system.type}`"
-      >
-        {{ system.name }}
-      </h5>
-      <h6 class="system-modal-type my-1" :class="`text-system--${system.type}`">
-        {{ system.type }}
-        <template v-if="system.action">
-          <!-- — {{ actionName(system.action) }} -->
-        </template>
-      </h6>
-      <template v-if="system.type === 'weapon'">
-        <dice-d20 class="d20 mr-1" />
-        <div class="font-weight-bold">
-          {{ rollString }}
-        </div>
-        <ArrowExpandHorizontal class="d20 ml-3 mr-1" />
-        <div class="font-weight-bold">{{ rangeString }}</div>
-        <Flare class="d20 ml-3 mr-1" />
-        <div class="font-weight-bold">{{ damageString }}</div>
-        <hr />
-        <div class="font-weight-bold font-italic">
-          {{ system.weapon_type.join(' ') }}
-        </div>
-        <div style="font-size: 0.7em" class="my-0">{{ system.tags }}</div>
-        <div>
-          <!-- {{ printRoll(system.weapon_roll, system.smart) }} -->
-        </div>
-        <div>
-          <!-- {{ printRange(system.weapon_range) }} -->
-        </div>
-        <div v-if="system.damage">
-          <!-- {{ printDamage(system.damage) }} -->
-        </div>
-      </template>
-      <template v-else-if="system.tags || system.action">
-        <hr />
-        <div style="font-size: 0.8em" class="my-1">{{ system.tags }}</div>
-      </template>
-      <template v-if="system.effect">
-        {{ system.effect }}
-      </template>
-    </b-modal>
-  </div>
 </template>
 
 <script lang="ts">
@@ -104,11 +74,12 @@ import ArrowExpandHorizontal from 'vue-material-design-icons/ArrowExpandHorizont
 import Flare from 'vue-material-design-icons/Flare.vue';
 
 import Recharge from './Recharge.vue';
+import SysModal from '../SysModal.vue';
 
 import renderTag from '@/logic/rendertag';
 
 export default Vue.extend({
-  components: { Recharge, DiceD20, ArrowExpandHorizontal, Flare },
+  components: { Recharge, DiceD20, ArrowExpandHorizontal, Flare, SysModal },
   props: {
     npc: { type: Object, required: true },
     system: { type: Object, required: true },
