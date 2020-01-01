@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <!-- <h1>LANCER</h1> -->
+    <b-alert show variant="warning"><b>
+      This tool is out of date and no longer supported. Please use <a href="https://github.com/massif-press/compcon">COMP/CON</a> instead. Contact me on discord (ari#6716) if you have any questions.
+    </b></b-alert>
     <b-container fluid id="main-zone">
       <b-row>
         <b-col>
